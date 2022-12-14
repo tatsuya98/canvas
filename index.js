@@ -1,13 +1,20 @@
 const canvasContainer = document.querySelector('.canvasContainer')
-canvasContainer.style.display = 'flex'
-canvasContainer.style.width = '50em'
-canvasContainer.style.height = '50em'
+const topContainer = document.querySelector('.top')
+canvasContainer.style.display = 'grid'
+canvasContainer.style.margin = '0 auto'
+canvasContainer.style.width = '500px'
+canvasContainer.style.height = '500px'
+canvasContainer.style.backgroundColor = 'white'
+topContainer.style.textAlign = 'center'
+topContainer.style.paddingBottom = '50px'
+document.querySelector('body').style.backgroundColor = '#F9F5E3'
 
 const button = document.querySelector('button')
 
-const CreatePanels = () =>{
-    for(let i = 0; i < 16; i++){
-        CreatePanel()
+const CreatePanels = (numberOfPanels) =>{
+    canvasContainer.style.gridTemplateColumns = `repeat(${numberOfPanels},1fr)`;
+    for(let i = 0; i < Math.pow(numberOfPanels,2); i++){
+        CreatePanel(numberOfPanels)
     }
     addEvents()
 }
@@ -17,15 +24,12 @@ const resetCanvas = () =>{
         canvasContainer.removeChild(colorPanel)
         colorPanel.removeEventListener('mouseover',changeColour)
     })
-    let numberofPanels = Number(prompt('How man panels do you wish to add',''))
+    let numberOfPanels = Number(prompt('choose a value between 1 and 100.',''))
     
-    if(numberofPanels !== numberofPanels || (numberofPanels < 1 || numberofPanels > 100)){
-        numberofPanels = errorCheck()
+    if(numberOfPanels !== numberOfPanels || (numberOfPanels < 1 || numberOfPanels > 100)){
+        numberOfPanels = errorCheck()
         }
-        
-        for(let i =0; i < numberofPanels; i++){
-            CreatePanel()
-        }
+        CreatePanels(numberOfPanels)
         addEvents()
     }
 
@@ -40,20 +44,18 @@ const addEvents = () =>{
     })
 }
 const errorCheck = () =>{
-    const numberofPanels = Number(prompt('you have entered a value that is larger than 100 or is not a number please enter again',''))
-    
-    if(numberofPanels !== numberofPanels || (numberofPanels < 1 || numberofPanels > 100)){
+    const numberOfPanels = prompt('you have entered a number less than 1 or higher than 100 please enter again','')
+    if(numberOfPanels !== numberOfPanels || (numberOfPanels < 1 || numberOfPanels > 100)){
         return errorCheck()
-    }else if(numberofPanels >= 1 && numberofPanels <= 100){
-        return numberofPanels
     }
+    return numberOfPanels
 }
 const CreatePanel = ()=>{
     const colorPanel = document.createElement('div');   
-        colorPanel.style.width = `10em`
-        colorPanel.style.height = `10em`
+        colorPanel.style.padding = '0'
+        colorPanel.style.margin = '0'
         colorPanel.setAttribute('class','panel')
         canvasContainer.appendChild(colorPanel)
 }
-CreatePanels()
+CreatePanels(16)
 button.addEventListener('click',resetCanvas)
